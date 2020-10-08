@@ -1,0 +1,63 @@
+---
+title: "Our World in Data: Key Crop Yields"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Our World in Data: Key Crop Yields}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6.5,
+  fig.height = 5
+)
+```
+
+```{r setup}
+library(cwdata)
+```
+
+## Loading the data
+
+A dataset containing crop yields for countries over time. Yields are measured in tonnes per hectare for seven crops. The data is contained within a tibble with 143825 observations and 5 variables.
+
+Once the package is loaded the data can be accessed using the following command:
+```{r}
+library(cwdata)
+library(tibble)
+key_crop_yields
+```
+
+## Exploration of data
+
+A simple visualisation of a countries crop output is a single year can be created using the method below:
+```{r plot1}
+library(ggplot2)
+library(dplyr)
+
+key_crop_yields %>%
+  filter(entity == "Australia",
+         year == "2018") %>%
+  ggplot(aes(x = reorder(crop, -tonnes_per_hectare),
+             y = tonnes_per_hectare)) +
+  geom_col()
+```
+Or the change in crop yields over time can be plotted:
+```{r plot2}
+library(ggplot2)
+library(dplyr)
+
+key_crop_yields %>%
+  filter(entity == "Australia") %>%
+  ggplot(aes(x = year,
+             y = tonnes_per_hectare,
+             colour = crop)) +
+  geom_line() +
+  labs(x = "Tonnes per hectare",
+       y = "Year") +
+  theme_bw()
+```
+
